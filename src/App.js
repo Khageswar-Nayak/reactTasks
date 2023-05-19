@@ -1,30 +1,63 @@
 import logo from "./logo.svg";
 import "./App.css";
-import ExpenseItem from "./Components/ExpenseItem";
+import ExpenseItem from "./Components/Expenses/ExpenseItem";
+import ExpenseForm from "./Components/Expenses/ExpenseForm";
 
-function App() {
+const App = () => {
   //const LocationOfExpenditure = "Mumbai";
   const obj = [
-    { title: "food", amount: 1000, place: "BDK" },
-    { title: "movie", amount: 700, place: "BLS" },
-    { title: "petrol", amount: 2000, place: "JJPR" },
-    { title: "other", amount: 1500, place: "BBSR" },
+    {
+      title: "food",
+      amount: 1000,
+      place: "Bhadrak",
+      date: new Date(2023, 3, 12),
+    },
+    {
+      title: "movie",
+      amount: 700,
+      place: "Baleswar",
+      date: new Date(2023, 3, 13),
+    },
+    {
+      title: "petrol",
+      amount: 2000,
+      place: "Jajpur",
+      date: new Date(2023, 3, 14),
+    },
+    {
+      title: "other",
+      amount: 1500,
+      place: "Bhubaneswar",
+      date: new Date(2023, 3, 15),
+    },
   ];
 
   const array = Object.keys(obj);
 
+  const saveExpenseDataHandler = (enteredExpenseData)=>{
+    const expenseData ={
+      ...enteredExpenseData,
+      id: Math.random().toString()
+    };
+    console.log(expenseData);
+
+  }
+
   return (
-    <div>
-      <h2>Let's get Started</h2>
-      <h2>Expense Items</h2>
-      {array.map((key) => (
-        <ExpenseItem          
-          //location={LocationOfExpenditure}
-          title={obj[key].title}
-          amount={obj[key].amount}
-          place={obj[key].place}
-        ></ExpenseItem>
-      ))}
+    <div className="App">
+      <ExpenseForm onSaveExpenseData={saveExpenseDataHandler}></ExpenseForm>
+
+      
+        {array.map((key) => (
+          <ExpenseItem
+            //location={LocationOfExpenditure}
+            title={obj[key].title}
+            amount={obj[key].amount}
+            place={obj[key].place}
+            date={obj[key].date}
+          ></ExpenseItem>
+        ))}
+      
       {/* <ExpenseItem
         location={LocationOfExpenditure}
         title={obj[0].title}
@@ -51,6 +84,6 @@ function App() {
       ></ExpenseItem> */}
     </div>
   );
-}
+};
 
 export default App;
