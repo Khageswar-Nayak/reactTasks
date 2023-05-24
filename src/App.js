@@ -1,63 +1,74 @@
 import logo from "./logo.svg";
+import React, { useState } from "react";
 import "./App.css";
 import ExpenseItem from "./Components/Expenses/ExpenseItem";
 import ExpenseForm from "./Components/Expenses/ExpenseForm";
 
+const obj = [
+  {
+    title: "food",
+    amount: 1000,
+    place: "Bhadrak",
+    date: new Date(2023, 3, 12),
+    id :1
+  },
+  {
+    title: "movie",
+    amount: 700,
+    place: "Baleswar",
+    date: new Date(2023, 3, 13),
+    id :2
+  },
+  {
+    title: "petrol",
+    amount: 2000,
+    place: "Jajpur",
+    date: new Date(2023, 3, 14),
+    id :3
+  },
+  {
+    title: "other",
+    amount: 1500,
+    place: "Bhubaneswar",
+    date: new Date(2023, 3, 15),
+    id :4
+  },
+];
+
 const App = () => {
   //const LocationOfExpenditure = "Mumbai";
-  const obj = [
-    {
-      title: "food",
-      amount: 1000,
-      place: "Bhadrak",
-      date: new Date(2023, 3, 12),
-    },
-    {
-      title: "movie",
-      amount: 700,
-      place: "Baleswar",
-      date: new Date(2023, 3, 13),
-    },
-    {
-      title: "petrol",
-      amount: 2000,
-      place: "Jajpur",
-      date: new Date(2023, 3, 14),
-    },
-    {
-      title: "other",
-      amount: 1500,
-      place: "Bhubaneswar",
-      date: new Date(2023, 3, 15),
-    },
-  ];
 
-  const array = Object.keys(obj);
+  //const array = Object.keys(obj);
+  const [expenses, setExpenses] = useState(obj);
 
-  const saveExpenseDataHandler = (enteredExpenseData)=>{
-    const expenseData ={
+  const saveExpenseDataHandler = (enteredExpenseData) => {
+    const expenseData = {
       ...enteredExpenseData,
-      id: Math.random().toString()
+      id: Math.random().toString(),
     };
     console.log(expenseData);
 
-  }
-
+    setExpenses((prevExpense) =>{
+      return [expenseData, ...prevExpense];
+    });
+   
+  };
+//  console.log(expenses);
   return (
     <div className="App">
       <ExpenseForm onSaveExpenseData={saveExpenseDataHandler}></ExpenseForm>
 
-      
-        {array.map((key) => (
-          <ExpenseItem
-            //location={LocationOfExpenditure}
-            title={obj[key].title}
-            amount={obj[key].amount}
-            place={obj[key].place}
-            date={obj[key].date}
-          ></ExpenseItem>
-        ))}
-      
+      {expenses.map((expenses) => (
+        <ExpenseItem
+          //location={LocationOfExpenditure}
+           key={expenses.id}
+          title={expenses.title}
+          amount={expenses.amount}
+          place={expenses.place}
+          date={expenses.date}
+        ></ExpenseItem>
+      ))}
+
       {/* <ExpenseItem
         location={LocationOfExpenditure}
         title={obj[0].title}
