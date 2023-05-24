@@ -2,7 +2,8 @@ import logo from "./logo.svg";
 import React, { useState } from "react";
 import "./App.css";
 import ExpenseItem from "./Components/Expenses/ExpenseItem";
-import ExpenseForm from "./Components/Expenses/ExpenseForm";
+import ExpenseForm from "./Components/Form/ExpenseForm";
+import ExpenseFilter from "./Components/Expenses/ExpenseFilter";
 
 const obj = [
   {
@@ -10,28 +11,28 @@ const obj = [
     amount: 1000,
     place: "Bhadrak",
     date: new Date(2023, 3, 12),
-    id :1
+    id: 1,
   },
   {
     title: "movie",
     amount: 700,
     place: "Baleswar",
-    date: new Date(2023, 3, 13),
-    id :2
+    date: new Date(2022, 3, 13),
+    id: 2,
   },
   {
     title: "petrol",
     amount: 2000,
     place: "Jajpur",
-    date: new Date(2023, 3, 14),
-    id :3
+    date: new Date(2021, 3, 14),
+    id: 3,
   },
   {
     title: "other",
     amount: 1500,
     place: "Bhubaneswar",
-    date: new Date(2023, 3, 15),
-    id :4
+    date: new Date(2020, 3, 15),
+    id: 4,
   },
 ];
 
@@ -40,6 +41,7 @@ const App = () => {
 
   //const array = Object.keys(obj);
   const [expenses, setExpenses] = useState(obj);
+  const [filteredYear, setFilteredYear] = useState("all");
 
   const saveExpenseDataHandler = (enteredExpenseData) => {
     const expenseData = {
@@ -48,20 +50,34 @@ const App = () => {
     };
     console.log(expenseData);
 
-    setExpenses((prevExpense) =>{
+    setExpenses((prevExpense) => {
       return [expenseData, ...prevExpense];
     });
-   
   };
-//  console.log(expenses);
+
+  const filterChangeHandler = (selectedYear) => {
+    setFilteredYear(selectedYear);
+  };
+
+  const filteredExpenses = expenses.filter((expense) => {
+    if (filteredYear === "all") {
+      return true;
+    } else {
+      return expense.date.getFullYear().toString() === filteredYear;
+    }
+  });
   return (
     <div className="App">
       <ExpenseForm onSaveExpenseData={saveExpenseDataHandler}></ExpenseForm>
+      <ExpenseFilter
+        selected={filteredYear}
+        onChangeFilter={filterChangeHandler}
+      />
 
-      {expenses.map((expenses) => (
+      {filteredExpenses.map((expenses) => (
         <ExpenseItem
           //location={LocationOfExpenditure}
-           key={expenses.id}
+          key={expenses.id}
           title={expenses.title}
           amount={expenses.amount}
           place={expenses.place}
