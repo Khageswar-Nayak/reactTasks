@@ -66,6 +66,8 @@ const App = () => {
       return expense.date.getFullYear().toString() === filteredYear;
     }
   });
+
+  
   return (
     <div className="App">
       <ExpenseForm onSaveExpenseData={saveExpenseDataHandler}></ExpenseForm>
@@ -73,17 +75,21 @@ const App = () => {
         selected={filteredYear}
         onChangeFilter={filterChangeHandler}
       />
-
+      
       {filteredExpenses.map((expenses) => (
-        <ExpenseItem
-          //location={LocationOfExpenditure}
-          key={expenses.id}
-          title={expenses.title}
-          amount={expenses.amount}
-          place={expenses.place}
-          date={expenses.date}
-        ></ExpenseItem>
-      ))}
+      <ExpenseItem
+        //location={LocationOfExpenditure}
+        key={expenses.id}
+        title={expenses.title}
+        amount={expenses.amount}
+        place={expenses.place}
+        date={expenses.date}
+        
+      ></ExpenseItem>
+      
+    ))}
+    {filteredExpenses.length== 1 && <p className="below-expense">Only single Expense here. Please add more...</p>}
+    {filteredExpenses.length== 0 && <p className="below-expense">Please add Expenses...</p>}
 
       {/* <ExpenseItem
         location={LocationOfExpenditure}
