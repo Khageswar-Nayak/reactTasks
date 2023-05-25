@@ -4,6 +4,7 @@ import "./App.css";
 import ExpenseItem from "./Components/Expenses/ExpenseItem";
 import ExpenseForm from "./Components/Form/ExpenseForm";
 import ExpenseFilter from "./Components/Expenses/ExpenseFilter";
+import AddExpenses from "./Components/Expenses/AddExpenses";
 
 const obj = [
   {
@@ -42,6 +43,7 @@ const App = () => {
   //const array = Object.keys(obj);
   const [expenses, setExpenses] = useState(obj);
   const [filteredYear, setFilteredYear] = useState("all");
+  const [isEditing, setIsEditing] = useState(false);
 
   const saveExpenseDataHandler = (enteredExpenseData) => {
     const expenseData = {
@@ -53,6 +55,7 @@ const App = () => {
     setExpenses((prevExpense) => {
       return [expenseData, ...prevExpense];
     });
+    setIsEditing(false);
   };
 
   const filterChangeHandler = (selectedYear) => {
@@ -67,29 +70,47 @@ const App = () => {
     }
   });
 
-  
+  const startEditingHandler = () => {
+    setIsEditing(true);
+  };
+
+  const stopEditingHandler = () => {
+    setIsEditing(false);
+  };
+
   return (
     <div className="App">
-      <ExpenseForm onSaveExpenseData={saveExpenseDataHandler}></ExpenseForm>
+      {!isEditing && <AddExpenses onAdd={startEditingHandler}></AddExpenses>}
+      {isEditing && (
+        <ExpenseForm
+          onSaveExpenseData={saveExpenseDataHandler}
+          onCancel={stopEditingHandler}
+        ></ExpenseForm>
+      )}
+
       <ExpenseFilter
         selected={filteredYear}
         onChangeFilter={filterChangeHandler}
       />
-      
+
       {filteredExpenses.map((expenses) => (
-      <ExpenseItem
-        //location={LocationOfExpenditure}
-        key={expenses.id}
-        title={expenses.title}
-        amount={expenses.amount}
-        place={expenses.place}
-        date={expenses.date}
-        
-      ></ExpenseItem>
-      
-    ))}
-    {filteredExpenses.length== 1 && <p className="below-expense">Only single Expense here. Please add more...</p>}
-    {filteredExpenses.length== 0 && <p className="below-expense">Please add Expenses...</p>}
+        <ExpenseItem
+          //location={LocationOfExpenditure}
+          key={expenses.id}
+          title={expenses.title}
+          amount={expenses.amount}
+          place={expenses.place}
+          date={expenses.date}
+        ></ExpenseItem>
+      ))}
+      {filteredExpenses.length == 1 && (
+        <p className="below-expense">
+          Only single Expense here. Please add more...
+        </p>
+      )}
+      {filteredExpenses.length == 0 && (
+        <p className="below-expense">Please add Expenses...</p>
+      )}
 
       {/* <ExpenseItem
         location={LocationOfExpenditure}
